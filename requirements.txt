@@ -12,3 +12,6 @@ yfinance
 deep-translator
 matplotlib
 seaborn
+optuna
+statsmodels
+torch
