@@ -53,6 +53,7 @@ import statsmodels.api as sm
 
 # Google Translator
 from deep_translator import GoogleTranslator
+import requests
 
 # Hugging Face sentiment pipeline
 import torch
@@ -124,7 +125,18 @@ def translate_to_en(text):
     try:
         return GoogleTranslator(source='auto', target='en').translate(text)
     except:
-        return ""
+        try:
+            url = "https://libretranslate.de/translate"
+            payload = {
+                "q": text,
+                "source": "id",
+                "target": "en",
+                "format": "text"
+            }
+            resp = requests.post(url, data=payload)
+            return resp.json()["translatedText"]
+        except:
+            return text
 
 def build_lime_explainer(sent_model, model, num_feat_dim):
     """Return a LimeTextExplainer and a wrapper prediction function that accepts list[str].
