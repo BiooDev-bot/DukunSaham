@@ -2,10 +2,10 @@ streamlit
 pandas
 numpy
 scipy
-scikit-learn==1.6.1
+scikit-learn
 sentence-transformers
 lime
-xgboost==1.7.6
+xgboost
 shap
 joblib
 yfinance
