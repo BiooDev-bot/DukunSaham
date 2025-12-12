@@ -5,7 +5,7 @@ scipy
 scikit-learn
 sentence-transformers
 lime
-xgboost
+xgboost==3.1.2
 shap
 joblib
 yfinance
