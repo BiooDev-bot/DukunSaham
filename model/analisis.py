@@ -300,7 +300,7 @@ ticker = "ACES"
 EMBED_MODEL_NAME = 'all-MiniLM-L6-v2'
 num_feat_dim = 2
 scaler = joblib.load(SCALER_PATH)
-xgb_model = xgb.Booster()
+xgb_model = xgb.XGBRegressor()
 xgb_model.load_model(MODEL_PATH)
 emb_model = SentenceTransformer(EMBED_MODEL_NAME) 
 lime_explainer, predict_texts = build_lime_explainer(emb_model, xgb_model, num_feat_dim)
