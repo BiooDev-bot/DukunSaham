@@ -155,7 +155,8 @@ def build_lime_explainer(sent_model, model, num_feat_dim):
             num0 = np.repeat(np.asarray(numeric_context), len(embs), axis=0)
         X_in = np.hstack([embs, num0])
         # Reshape the output to be 2D as LIME expects (n_samples, n_classes), even for single regression output
-        return model.predict(X_in).reshape(-1, 1)
+	 dmatrix = xgb.DMatrix(X_in)
+        return model.predict(dmatrix).reshape(-1, 1)
 
     return explainer, predict_texts
 
@@ -263,7 +264,8 @@ def predict_headline_with_ticker(
     X_in = np.hstack([emb, num_feats_scaled])
 
     # 5️⃣ Prediksi
-    pred = float(model.predict(X_in)[0])
+    dmatrix = xgb.DMatrix(X_in)
+    pred = float(model.predict(dmatrix)[0])
 
     print("📰 headline_en:", headline_en)
     print(f"📊 Predicted rate_pct_log: {pred:.6f}")
@@ -287,7 +289,7 @@ def predict_headline_with_ticker(
 
 def load_all_models():
     scaler = joblib.load(SCALER_PATH)
-    xgb_model = xgb.XGBRegressor()
+    xgb_model = xgb.Booster()
     xgb_model.load_model(MODEL_PATH)
     emb_model = SentenceTransformer(EMBED_MODEL_NAME)
     return scaler, xgb_model, emb_model
@@ -300,7 +302,7 @@ ticker = "ACES"
 EMBED_MODEL_NAME = 'all-MiniLM-L6-v2'
 num_feat_dim = 2
 scaler = joblib.load(SCALER_PATH)
-xgb_model = xgb.XGBRegressor()
+xgb_model = xgb.Booster()
 xgb_model.load_model(MODEL_PATH)
 emb_model = SentenceTransformer(EMBED_MODEL_NAME) 
 lime_explainer, predict_texts = build_lime_explainer(emb_model, xgb_model, num_feat_dim)
